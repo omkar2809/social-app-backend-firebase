@@ -5,7 +5,11 @@ const config = require('../util/config');
 
 firebase.initializeApp(config);
 
-const {validateSignUpData, validateLoginData, reduceUserDetails} = require('../util/validators');
+const {
+    validateSignUpData,
+    validateLoginData, 
+    reduceUserDetails
+} = require('../util/validators');
 
 exports.signup = (req, res) => {
     const newUser = {
@@ -59,7 +63,7 @@ exports.signup = (req, res) => {
                 return res.status(400).json({email : 'Email is already in use'});
             }
             else{
-                return res.status(500).json({error: err.code});
+                return res.status(500).json({general: 'Something went wrong, please try again!'});
             }
         });
 }
@@ -81,15 +85,10 @@ exports.login = (req, res) => {
             return data.user.getIdToken();
         })
         .then(token => {
-            return res.status(201).json({token});
+            return res.json({token});
         })
         .catch(err => {
-            if(err.code === 'auth/wrong-password'){
-                return res.status(403).json({general: 'Wrong Credentials, please try again'});
-            }
-            else {
-                return res.status(500).json({error : err.code});
-            }
+            return res.status(403).json({general: 'Wrong credentials, please try again!!'});
         });
 }
 
