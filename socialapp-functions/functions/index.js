@@ -5,7 +5,8 @@ const app = express();
 const {db} = require('./util/admin');
 
 const {getAllScreams, postOneScream, getScream, commentOnScream, likeScream, unlikeScream, deleteScream} = require('./handlers/screams');
-const {signup, login, uploadImage, addUserDetails, getAuthenticatedUser} = require('./handlers/users');
+
+const {signup, login, uploadImage, addUserDetails, getAuthenticatedUser, getUserDetails, markNotificationRead} = require('./handlers/users');
 const FBAuth = require('./util/FBAuth');
 
 app.get('/screams', getAllScreams);
@@ -21,6 +22,8 @@ app.post('/login', login);
 app.post('/user/image', FBAuth, uploadImage);
 app.post('/user', FBAuth, addUserDetails);
 app.get('/user', FBAuth, getAuthenticatedUser);
+app.get('/user/:handle', getUserDetails);
+app.post('/notifications', FBAuth, markNotificationRead);
 
 exports.api = functions.https.onRequest(app);
 
